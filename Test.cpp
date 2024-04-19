@@ -191,8 +191,8 @@ VARIANT CreateSafeArray(std::vector<double>& points)
 }
 
 void CreateLocalCS(IDocument3DPtr& doc) {
-    //IPartPtr part(doc->GetPart(pTop_Part));
-    //if (part) {
+    IPartPtr part(doc->GetPart(pTop_Part));
+    if (part) {
         ksAPI7::IPart7Ptr part7(doc->GetPart(pTop_Part));
         MessageT(_T("Ok0")); //срабатывает
         if (part7)
@@ -233,7 +233,7 @@ void CreateLocalCS(IDocument3DPtr& doc) {
                 }
             }
         }
-    //}
+    }
 }
 
 //-----------------------------------------------------------------------------
