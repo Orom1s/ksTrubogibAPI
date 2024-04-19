@@ -180,7 +180,8 @@ VARIANT CreateSafeArray(std::vector<double>& points)
     {
         for (long i = 0, count = points.size(); i < count; i++)
         {
-            ::SafeArrayPutElement(pSafe, &i, &points[i]);
+            double tmp = points[i];
+            ::SafeArrayPutElement(pSafe, &i, &tmp);
         }
 
         V_VT(&varRow) = VT_ARRAY | VT_R8;
