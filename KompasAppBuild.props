@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Свойства сборки приложений КОМПАС</_PropertySheetDisplayName>
+  </PropertyGroup>
+
+  <!--AR Локальные пути генерации модулей приложения и промежуточных файлов -->
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)\$(Configuration)\$(Platform)\Exe\</OutDir>
+    <IntDir>$(SolutionDir)\$(Configuration)\$(Platform)\Obj\$(TargetName)\</IntDir>
+  </PropertyGroup>
+ 
+  <!--AR При автосборке приложений выполняется ОБЩЕЕ архивирование PDB-файлов -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>    
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDataBaseFile>$(OutDir)\$(TargetName).pdb</ProgramDataBaseFile>
+    </Link>        
+  </ItemDefinitionGroup>
+ 
+  <!--AR Настройка путей KOMPAS_SDK для использования в проектах приложений -->
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <IncludePath>$(KOMPAS_SDK)\Include;$(KOMPAS_SDK)\Lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(KOMPAS_SDK)\K3D\Include\2D;$(KOMPAS_SDK)\K3D\Include\3D;$(KOMPAS_SDK)\K3D\Include\UI\Include;$(KOMPAS_SDK)\K3D\Include\Render;$(IncludePath)</IncludePath>
+	<IncludePath>$(KOMPAS_SDK)\K3D\Include;$(IncludePath)</IncludePath>
+	<IncludePath>$(KOMPAS_SDK)\K3D\Include\Sys;$(IncludePath)</IncludePath>
+    <IncludePath>$(KOMPAS_SDK)\include-c3d;$(IncludePath)</IncludePath>    
+    <IncludePath>$(BOOST_DIR);$(IncludePath)</IncludePath>
+    
+    <LibraryPath Condition="'$(Platform)'=='Win32'">$(KOMPAS_SDK)\Lib;$(KOMPAS_SDK)\K3D\Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Platform)'=='x64'">$(KOMPAS_SDK)\Lib64;$(KOMPAS_SDK)\K3D\Lib64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+
+  <!--AR Настройка путей через KOMPAS_DIR для использования ТОЛЬКО в Debug -->
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <IncludePath>$(KOMPAS_DIR)\Source\2D;$(KOMPAS_DIR)\Source\2D\LibToolDis;$(IncludePath)</IncludePath>
+    <IncludePath>$(KOMPAS_DIR)\Source\3D;$(KOMPAS_DIR)\Source\3D\AppTool3;$(IncludePath)</IncludePath>
+    <IncludePath>$(KOMPAS_DIR)\Source\UI\Include;$(IncludePath)</IncludePath>
+	<IncludePath>$(KOMPAS_DIR)\Source\Render;$(IncludePath)</IncludePath>
+	<IncludePath>$(KOMPAS_DIR)\Source;$(IncludePath)</IncludePath>
+	<IncludePath>$(KOMPAS_DIR)\Source\Sys;$(IncludePath)</IncludePath>
+    <IncludePath>$(KOMPAS_DIR)\Source\c3d\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(KOMPAS_DIR)\Tools\Boost;$(IncludePath)</IncludePath>
+    <!--IncludePath>$(KOMPAS_DIR)\$(Configuration)\$(Platform)\Exe;$(IncludePath)</IncludePath-->
+    
+    <LibraryPath>$(KOMPAS_DIR)\$(Configuration)\$(Platform)\Exe;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+
+  <!--AR Используемые модули KOMPAS_SDK, C3D и K3D в проектах данного приложения -->
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>kApi2d5.lib;kApi3d5.lib;kApi5.lib;kApi7.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>c3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kSys1.lib;kSys2.lib;kProc.lib;kLib.lib;kRprt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>k2dDoc.lib;k2dObj.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>k3dObj1.lib;k3dObj2.lib;kM3dUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kUi1.lib;kUi2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>prodData.lib;%(AdditionalDependencies)</AdditionalDependencies>  
+    </Link>    
+  </ItemDefinitionGroup>  
+
+  <!--AR Настройка информации о версии приложений через внешние переменные -->
+  <ItemDefinitionGroup Condition="'$(BuildVersionMajor)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>BuildVersionMajor=$(BuildVersionMajor);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(BuildVersionMinor)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>BuildVersionMinor=$(BuildVersionMinor);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(BuildVersionPatch)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>BuildVersionPatch=$(BuildVersionPatch);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(BuildNumber)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>BuildNumber=$(BuildNumber);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(BuildCopyrightYear)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>BuildCopyrightYear=$(BuildCopyrightYear);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(PlatformShortName)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>PlatformShortName=$(PlatformShortName);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(ProjectName)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>ProjectName=$(ProjectName);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>  
+  <ItemDefinitionGroup Condition="'$(TargetFileName)'!=''">
+    <ResourceCompile><PreprocessorDefinitions>TargetFileName=$(TargetFileName);%(PreprocessorDefinitions)</PreprocessorDefinitions></ResourceCompile>
+  </ItemDefinitionGroup>
+
+  <!--AR Следующие параметры задаются автоматически по OutDir и TargetName
+  <ClCompile>
+    <ObjectFileName>
+    <PrecompiledHeaderOutputFile>
+    <AssemblerListingLocation>
+  <ResourceCompile>
+    <ResourceOutputFileName>    
+  <Bscmake>
+    <OutputFile>
+  <Midl>
+    <TypeLibraryName>
+  <Link>
+    <OutputFile>
+    <ImportLibrary>
+  
+  <AdditionalIncludeDirectories> по <IncludePath>
+  <AdditionalLibraryDirectories> по <LibraryPath>
+  --> 
+</Project>
